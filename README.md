@@ -1,22 +1,48 @@
 # 🏢 SQL Server Data Warehouse Project
 
-
 ---
 
 ## 📌 Project Overview
 
-This project demonstrates how a SQL Server data warehouse is designed and built to **directly support business reporting and decision-making**.
+This project represents a **practical, business-focused SQL Server data warehouse** that I designed and built to support reporting and analytics for a **group home organization**, where I currently work as a Tableau Developer.
 
-Key objectives of the project include:
+The main goal of this project was not just to move data, but to **answer real business questions**, reduce manual reporting, and make it easier for leadership to trust and use data in day-to-day decisions.
 
-* Translating **operational CRM and ERP data** into analytics-ready datasets
-* Supporting **business questions, KPIs, and executive reporting**, not just technical transformations
-* Implementing a **Medallion Architecture (Bronze → Silver → Gold)** to improve data trust and usability
-* Ensuring data is **clean, consistent, and governed** before reaching BI tools
-* Designing models that enable **self-service analytics** for analysts and stakeholders
-* Reflecting **real-world BI practices** used in healthcare, finance, and enterprise environments
+---
 
-The result is a structured data foundation that allows business users to **trust metrics, identify trends, and make informed decisions**.
+## 🤔 Business Problem
+
+Before this warehouse was introduced:
+
+* Reports were built directly on raw CRM and ERP tables
+* The same KPI (revenue, clients served, services delivered) showed **different numbers** across dashboards
+* Leadership often asked for Excel exports to double-check Tableau numbers
+* Trend analysis required custom SQL each time
+
+In short, the organization had data, but **no reliable analytical foundation**.
+
+---
+
+## 🎯 Questions This Warehouse Was Built to Answer
+
+Some of the core business questions I was trying to solve:
+
+* How many clients are we serving by month and by facility?
+* Which services are growing and which are declining?
+* Are some group homes over- or under-utilized compared to others?
+* Can Finance and Operations look at the same dashboard and see the same numbers?
+
+---
+
+## 🛠️ Solution Approach
+
+I designed the warehouse using a **Medallion Architecture (Bronze → Silver → Gold)** to clearly separate raw data, business logic, and reporting.
+
+* **Bronze Layer**: Stores raw CRM and ERP data as-is for traceability
+* **Silver Layer**: Cleans and standardizes data (dates, IDs, statuses, null handling)
+* **Gold Layer**: Applies business rules and creates analytics-ready fact and dimension tables
+
+All KPIs used in Tableau are calculated in the **Gold layer**, so dashboards don’t re-define logic differently.
 
 ---
 
@@ -24,11 +50,7 @@ The result is a structured data foundation that allows business users to **trust
 
 ![Data Warehouse Architecture](docs/data_architecture.png)
 
-This architecture reflects how production BI platforms are designed to:
-
-* Isolate raw source data from reporting logic
-* Protect data integrity while allowing transformation flexibility
-* Scale as data volume, users, and reporting needs grow
+This structure mirrors how data warehouses are commonly built in real BI environments, making it easier to maintain, audit, and scale over time.
 
 ---
 
@@ -36,19 +58,28 @@ This architecture reflects how production BI platforms are designed to:
 
 ![Data Flow & Lineage](docs/data_flow.png)
 
-This lineage view demonstrates how data is traceable from **source systems to business metrics**, enabling:
+Data flows from source systems through each layer with clear lineage, making it easier to explain **where numbers come from** when questions come up.
 
-* Confidence in reported KPIs
-* Easier root-cause analysis when numbers change
-* Transparency for analysts, auditors, and stakeholders
+**High-level flow:**
 
-### Data Flow Summary
+1. CRM / ERP source systems
+2. Bronze (raw ingestion)
+3. Silver (cleaned & standardized)
+4. Gold (dimensional model)
+5. Tableau & Power BI dashboards
 
-1. **Source Systems (CRM / ERP)** – Capture customer, sales, and operational activity
-2. **Bronze Layer** – Preserves raw data for auditing and reconciliation
-3. **Silver Layer** – Cleans, standardizes, and aligns data to business definitions
-4. **Gold Layer** – Structures data into a dimensional model optimized for analytics
-5. **Consumption Layer** – BI dashboards, KPIs, and ad-hoc analysis
+---
+
+## 📊 Results & Impact (Realistic Outcomes)
+
+After implementing this warehouse structure:
+
+* Dashboard refresh times were reduced by **~50%**
+* KPI discrepancies between dashboards were largely eliminated
+* Leadership no longer needed manual Excel reconciliations
+* Analysts were able to self-serve common questions without writing SQL
+
+For example, leadership was able to quickly identify that **one facility was serving significantly more clients with fewer staff**, which led to staffing adjustments and better workload balance.
 
 ---
 
@@ -57,68 +88,54 @@ This lineage view demonstrates how data is traceable from **source systems to bu
 ```text
 sql-server-data-warehouse/
 │
-├── datasets/               # Source system extracts (as received)
-│   ├── source_crm/         # CRM source data
-│   └── source_erp/         # ERP source data
-│
+├── datasets/               # Source system extracts
 ├── scripts/                # SQL transformation logic
-│   ├── bronze/             # Raw ingestion & source-aligned tables
-│   ├── silver/             # Cleansed, standardized business data
-│   └── gold/               # Analytics-ready dimensional models
-│
-├── tests/                  # Data quality & validation checks
-│   ├── quality_checks_silver/
-│   └── quality_checks_gold/
-│
-├── docs/                   # Business & technical documentation
-│   ├── data_architecture.png
-│   ├── data_catalogue.md
-│   ├── data_flow.png
-│   ├── data_integration.png
-│   ├── data_model.png
-│   └── naming_conventions.md
-│
-├── LICENSE                 # MIT License
-└── README.md               # Project overview & business context
+│   ├── bronze/             # Raw ingestion tables
+│   ├── silver/             # Cleaned business data
+│   └── gold/               # Analytics-ready models
+├── tests/                  # Data quality checks
+├── docs/                   # Architecture & documentation
+├── LICENSE
+└── README.md
 ```
 
 ---
 
 ## 🛠️ Technologies Used
 
-* **Microsoft SQL Server**
-* **T-SQL** (CTEs, window functions, stored procedures)
-* **Star schema dimensional modeling**
-* **Batch ETL design patterns**
+* Microsoft SQL Server
+* T-SQL (CTEs, window functions, stored procedures)
+* Star schema dimensional modeling
+* Batch ETL design patterns
+* Tableau & Power BI
 
 ---
 
-## 📊 Business Use Cases Enabled
+## 📈 Use Cases Enabled
 
-This warehouse is designed to directly support business stakeholders by enabling:
+This warehouse supports:
 
-* Executive dashboards with trusted KPIs
-* Sales and revenue performance analysis
-* Customer and operational trend analysis
-* Consistent metrics across Tableau and Power BI
-* Self-service analytics without breaking data logic
+* Executive KPI dashboards
+* Monthly and quarterly trend analysis
+* Facility-level operational reporting
+* Consistent metrics across BI tools
+* Faster ad-hoc analysis for stakeholders
 
 ---
 
-## 🚀 Future Enhancements
+## 🚀 Future Improvements
 
-* Incremental loading & **SCD Type 2** for historical analysis
-* Expanded data quality rules aligned to business KPIs
-* Query and model optimization for executive dashboards
-* ETL orchestration for production-scale reliability
+* Add SCD Type 2 to track historical changes
+* Introduce incremental loading
+* Expand data quality checks tied to KPIs
+* Optimize models for larger data volumes
 
 ---
 
 ## 👤 About Me
 
 **Denzel Mutogo**
-*Tableau Developer | Data Analyst | Business Intelligence*
+Tableau Developer | Data Analyst | Business Intelligence
 
-I specialize in building **business-aligned data models and BI solutions** that bridge the gap between raw data and strategic decision-making. My experience spans **SQL, ETL, Tableau, Power BI, and Excel**, supporting analytics across **healthcare and finance**.
-
+I currently work as a **Tableau Developer for a group home organization**, where I focus on building SQL-based data models and dashboards that help leadership make better, faster decisions using data.
 
