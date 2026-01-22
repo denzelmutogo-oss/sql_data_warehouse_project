@@ -1,4 +1,4 @@
-# 🏢 SQL Server Data Warehouse Project
+# 🏢 Core Reporting Data Warehouse
 
 ---
 
