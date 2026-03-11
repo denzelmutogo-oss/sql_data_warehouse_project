@@ -1,89 +1,77 @@
 # 🏢 Core Reporting Data Warehouse
-
+ 
 ---
 
 ## 📌 Project Overview
 
-This project represents a **practical, business-focused SQL Server data warehouse** that I designed and built to support reporting and analytics for a **group home organization**, where I currently work as a Tableau Developer.
+This project demonstrates the design and implementation of a **business-focused SQL Server data warehouse** to centralize operational data, automate reporting, and provide leadership with **consistent, reliable KPIs**.  
 
-The main goal of this project was not just to move data, but to **answer real business questions**, reduce manual reporting, and make it easier for leadership to trust and use data in day-to-day decisions.
+The main goal was to **solve real business problems, reduce manual reporting, and enable self-service analytics** for Finance, Operations, and Marketing teams.
 
 ---
 
 ## 🤔 Business Problem
 
-Before this warehouse was introduced:
+Before this warehouse:
 
-* Reports were built directly on raw CRM and ERP tables
-* The same KPI (revenue, clients served, services delivered) showed **different numbers** across dashboards
-* Leadership often asked for Excel exports to double-check Tableau numbers
-* Trend analysis required custom SQL each time
+- Reports were built directly on raw CRM and ERP tables.  
+- KPIs such as revenue, clients served, and services delivered often **showed conflicting numbers**.  
+- Leadership relied on manual Excel exports to validate dashboards.  
+- Trend analysis required custom SQL queries each time.  
 
-In short, the organization had data, but **no reliable analytical foundation**.
+**Result:** Data existed but **no single source of truth** for reliable analytics.
 
 ---
 
-## 🎯 Questions This Warehouse Was Built to Answer
+## 🎯 Business Questions Addressed
 
-Some of the core business questions I was trying to solve:
+The warehouse was designed to answer questions like:
 
-* How many clients are we serving by month and by facility?
-* Which services are growing and which are declining?
-* Are some group homes over- or under-utilized compared to others?
-* Can Finance and Operations look at the same dashboard and see the same numbers?
+- How many clients are served by month and by facility?  
+- Which services are growing or declining?  
+- Are some facilities over- or under-utilized?  
+- Can Finance and Operations use the same dashboard with consistent numbers?  
 
 ---
 
 ## 🛠️ Solution Approach
 
-I designed the warehouse using a **Medallion Architecture (Bronze → Silver → Gold)** to clearly separate raw data, business logic, and reporting.
+Designed using a **Medallion Architecture (Bronze → Silver → Gold)** to separate raw data, business logic, and analytics-ready tables:
 
-* **Bronze Layer**: Stores raw CRM and ERP data as-is for traceability
-* **Silver Layer**: Cleans and standardizes data (dates, IDs, statuses, null handling)
-* **Gold Layer**: Applies business rules and creates analytics-ready fact and dimension tables
+- **Bronze Layer:** Stores raw CRM and ERP extracts for traceability.  
+- **Silver Layer:** Cleans, standardizes, and validates data (dates, IDs, statuses, null handling).  
+- **Gold Layer:** Applies business rules, calculates KPIs, and builds fact/dimension tables ready for dashboards.  
 
-All KPIs used in Tableau are calculated in the **Gold layer**, so dashboards don’t re-define logic differently.
-
----
-
-## 🏗️ Architecture Overview
-
-![Data Warehouse Architecture](docs/data_architecture.png)
-
-This structure mirrors how data warehouses are commonly built in real BI environments, making it easier to maintain, audit, and scale over time.
+All KPIs are calculated in the **Gold layer**, ensuring dashboards **don’t redefine metrics inconsistently**.
 
 ---
 
-## 🔄 Data Flow & Lineage
+## 🏗️ Architecture & Data Flow
 
-![Data Flow & Lineage](docs/data_flow.png)
+**High-Level Data Flow:**
 
-Data flows from source systems through each layer with clear lineage, making it easier to explain **where numbers come from** when questions come up.
+1. CRM / ERP source systems  
+2. Bronze (raw ingestion)  
+3. Silver (cleaned & standardized)  
+4. Gold (dimensional models)  
+5. Tableau & Power BI dashboards  
 
-**High-level flow:**
-
-1. CRM / ERP source systems
-2. Bronze (raw ingestion)
-3. Silver (cleaned & standardized)
-4. Gold (dimensional model)
-5. Tableau & Power BI dashboards
-
----
-
-## 📊 Results & Impact (Realistic Outcomes)
-
-After implementing this warehouse structure:
-
-* Dashboard refresh times were reduced by **~50%**
-* KPI discrepancies between dashboards were largely eliminated
-* Leadership no longer needed manual Excel reconciliations
-* Analysts were able to self-serve common questions without writing SQL
-
-For example, leadership was able to quickly identify that **one facility was serving significantly more clients with fewer staff**, which led to staffing adjustments and better workload balance.
+**Data Lineage & Traceability:**  
+Clear lineage ensures stakeholders can **verify where every metric comes from**, improving trust in reporting.
 
 ---
 
-## 📂 Repository Structure
+## 📊 Key Achievements & Impact
+
+- Reduced dashboard refresh times by **~50%**.  
+- Eliminated KPI discrepancies across dashboards.  
+- Leadership no longer relied on manual Excel reconciliations.  
+- Analysts could answer ad hoc questions **without writing SQL**.  
+- Enabled actionable insights such as identifying **overworked facilities** and optimizing staff allocation.  
+
+---
+
+## 💻 Repository Structure
 
 ```text
 sql-server-data-warehouse/
@@ -97,45 +85,3 @@ sql-server-data-warehouse/
 ├── docs/                   # Architecture & documentation
 ├── LICENSE
 └── README.md
-```
-
----
-
-## 🛠️ Technologies Used
-
-* Microsoft SQL Server
-* T-SQL (CTEs, window functions, stored procedures)
-* Star schema dimensional modeling
-* Batch ETL design patterns
-* Tableau & Power BI
-
----
-
-## 📈 Use Cases Enabled
-
-This warehouse supports:
-
-* Executive KPI dashboards
-* Monthly and quarterly trend analysis
-* Facility-level operational reporting
-* Consistent metrics across BI tools
-* Faster ad-hoc analysis for stakeholders
-
----
-
-## 🚀 Future Improvements
-
-* Add SCD Type 2 to track historical changes
-* Introduce incremental loading
-* Expand data quality checks tied to KPIs
-* Optimize models for larger data volumes
-
----
-
-## 👤 About Me
-
-**Denzel Mutogo**
-Tableau Developer | Data Analyst | Business Intelligence
-
-I currently work as a **Tableau Developer for a group home organization**, where I focus on building SQL-based data models and dashboards that help leadership make better, faster decisions using data.
-
